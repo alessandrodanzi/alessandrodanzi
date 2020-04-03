@@ -59,3 +59,29 @@ library(ggplot2)  #require(ggplot2) in both cases to make use of the package
 
 #save the .RData under the menu file
 ###############MAC??########
+
+
+#Load the previously data with double click on the file
+#setting always the working directory (where data is coming from and going to)
+#mac
+setwd("/Users/alessandro/lab")
+
+#load the previous RData
+load("covid_workspace.RData")
+ls()  #to see which files are uploaded
+
+###Using ggplo2###
+library(ggplot2) #require(ggplot2)
+
+data(mpg)
+head(mpg)
+#key components: data, aes, geometry
+#data in this case is mpg, we close both the () after x and y cuz the geometry is apart
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_point()
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_line()
+ggplot(mpg, aes(x=displ, y=hwy)) + geom_polygon()
+
+#let's look at the covid data that we already have uploaded
+head(covid)
+#we will exagerate the size by the number of cases
+ggplot(covid, aes(x=lon,y=lat, size=cases)) + geom_point()
