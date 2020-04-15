@@ -1,0 +1,40 @@
+###R code for multivariate analysis###
+
+#Open R#
+#set the work directory
+setwd("/Users/alessandro/lab")
+install.packages("vegan")
+library(vegan)
+
+#biomes is the name that we give, read.table is to analyze the data, "biomes.csv" is the name of the file, head=T because the first row is words, sep="," is the separator between the names of the words in the row (that Prof putted to create columns)
+biomes<-read.table("biomes.csv",head=T,sep=",")
+
+#to look at the dataset: head(biomes)or view(biomes)
+head(biomes)
+
+#multivariate analysis: decorana=detrended correspondence analysis
+multivar<- decorana(biomes)
+
+#we can then make the plot of the multivariate analysis
+plot(multivar)
+
+#we are now seeing the graph from 1 point of view, but we can see it from other
+#if we just put multivar, we see the analysis that happened
+multivar
+
+#eigenvalues= percentage of the data that we are seeing from this perception
+#we got DCA1=0.5117 DCA2=0.3036,  51%+30%=81%
+
+#let's use other data to then sum up the same biomes
+biomes_types <- read.table("biomes_types.csv", header=T, sep=",")
+head(biomes_types)
+
+attach(biomes_types)
+
+#we make an ordiellipse that connects all the data. Multivar is the first name we gave.
+
+#we can put the color like this or col=c("green","orange","red","blue")
+ordiellipse(multivar,type, col=1:4, kind="ehull", lwd=3)
+
+#to see the 'disk' of the biomes
+ordispider(multivar, type, col=1:4, label = T)
