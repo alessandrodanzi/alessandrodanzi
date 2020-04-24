@@ -91,3 +91,74 @@ plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
 #this time the agricultural area is in yellow (really easy to see)
 
 
+
+
+####Second day####
+#open saved workspace#
+
+setwd("/Users/alessandro/lab")
+ls()
+
+library(raster)
+p224r63_1988 <- brick("p224r63_1988_masked.grd")
+plot(p224r63_1988)
+
+#Exercise: plot in visible RGB 321 both images
+#PlotRGB
+#Bands of landsat
+#B1: blue
+#B2:green
+#B3:red
+#B4:NIR  #infrared
+
+par(mfrow=c(2,1))
+plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
+
+#Exercise false color RGB 432
+par(mfrow=c(2,1))
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+
+#How to see the noise(due to evapotraspiration, humidity and clouds)
+present in the image?
+#Stretching more the colours and so enhancing the noise
+par(mfrow=c(2,1))
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="hist")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
+
+#PlotRGB
+#Bands of landsat
+#B1: blue
+#B2:green
+#B3:red:B3_sre
+#B4:NIR  #infrared:B4_sre
+
+dvi2011<- p224r63_2011$B4_sre - p224r63_2011$B3_sre
+#colors() to see the colours
+cl <- colorRampPalette(c('firebrick4','tomato2','olivedrab4'))(100) 
+plot(dvi2011, col=cl)
+
+#Exercise dvi 1988
+dvi1988<- p224r63_1988$B4_sre - p224r63_1988$B3_sre
+#colors() to see the colours
+cl <- colorRampPalette(c('firebrick4','lightsalmon1','darkolivegreen'))(100) 
+plot(dvi1988, col=cl)
+
+diff <- dvi2011 - dvi1988
+plot(diff)
+
+#changing the grain(pixels)!
+#when you change the dimension of the pixels you talk about resempling (res)
+#fact=10 means that we are increasing 10 times the pixels
+p224r63_2011res10<-aggregate(p224r63_2011, fact=10)
+p224r63_2011res100<-aggregate(p224r63_2011, fact=100)
+
+#Exercise same image, original, x10, x100
+par(mfrow=c(3,1))
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_2011res10, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_2011res100, r=4, g=3, b=2, stretch="Lin")
+ 
+ 
+ 
