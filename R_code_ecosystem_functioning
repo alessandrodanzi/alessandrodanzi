@@ -1,0 +1,100 @@
+#R code to view biomass over the world and calculate changes in ecosystem functioning
+
+#energy
+#chemical cycling
+#proxies
+
+install.packages("rasterdiv")
+install.packages("rasterVis")
+library(rasterVis)
+library(rasterdiv)
+
+data(copNDVI)
+plot(copNDVI)
+
+#cbind is to remove some data from the library that is not useful for us
+copNDVI<- reclassify(copNDVI, cbind(253:255,NA), right=TRUE)
+
+#impressive function to impress your supervisor
+levelplot(copNDVI)
+#highlights the mean biomass over the last 20 years
+
+#aggregating 10 pixels in 1, so the new image has much visible boundaries beetween colours
+copNDVI10<- aggregate (copNDVI,fact=10)
+levelplot(copNDVI10)
+
+#let's try 100x100 pixels in one
+copNDVI100<- aggregate (copNDVI,fact=100)
+levelplot(copNDVI100)
+
+
+##########################statistics: code for making plots from maps###########################
+library(ggplot2)
+
+ 
+
+myPalette <- colorRampPalette(c('white','green','dark green'))
+sc <- scale_colour_gradientn(colours = myPalette(100), limits=c(1, 8))
+
+ 
+
+ggR(copNDVI, geom_raster = TRUE) +
+scale_fill_gradientn(name = "NDVI", colours = myPalette(100))+
+labs(x="Longitude",y="Latitude", fill="")+
+#   theme(legend.position = "bottom") +
+  NULL
+# +
+# ggtitle("NDVI")
+#impressive function to impress your supervisor
+#impressive function to impress your supervisor
+##################################################################################
+
+
+
+setwd("/Users/alessandro/lab")
+library(raster)
+defor1 <- brick("defor1_.jpg")
+defor2 <- brick("defor2_.jpg")
+
+#band1: NIR
+#band2: red
+#band3: green
+
+plotRGB(defor1, r=1, g=2,b=3, stretch="Lin")
+plotRGB(defor2, r=1, g=2, b=3, stretch="Lin")
+
+#to see the two images one next to the other
+par(mfrow=c(1,2))
+plotRGB(defor1, r=1, g=2, b=3, stretch="Lin")
+plotRGB(defor2, r=1, g=2, b=3, stretch="Lin")
+
+#if you write defor1 on R you look at the names that correspond to the 3 bands
+#names      : defor1_.1, defor1_.2, defor1_.3
+
+#band1: NIR    defor1_.1
+#band2: red    defor1_.2
+
+dvi1 <- defor1$defor1_.1 - defor1$defor1_.2
+ 
+ 
+ #same for defor2
+ #names      : defor2_.1, defor2_.2, defor2_.3 
+ #band1: NIR    defor2_.1
+ #band2: red     defor2_.2
+ 
+ dvi2 <- defor2$defor2_.1 - defor2$defor2_.2
+ 
+ cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+ 
+par(mfrow=c(1,2))
+colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+par(mfrow=c(1,2))
+plot(dvi1, col=cl)
+plot(dvi2, col=cl)
+
+difdvi<- dvi1 - dvi2
+
+dev.off()
+cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(difdvi, col=cld)
+hist(difdvi)
