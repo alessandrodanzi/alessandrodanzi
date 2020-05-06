@@ -1,0 +1,75 @@
+setwd("/Users/alessandro/lab")
+
+#install.packages("RStoolbox")
+library(raster)
+library(RStoolbox)
+library(ggplot2)
+
+# brick to import images
+p224r63_2011 <- brick("p224r63_2011_masked.grd")
+
+#we use plotRGB
+#b1 blue
+#b2 green
+#b3 red
+#b4 NIR
+#b5 SWIR (short wave infrared)
+#infrared has 3 parts: one close to red, one in other place, one as thermal infrared.
+#b6 thermal infrar
+#b7 SWIR
+#b8 panchromatic
+
+#RGB:
+plotRGB(p224r63_2011, r=5, g=4, b=3, stretch="Lin") 
+ggRGB(p224r63_2011,5,4,3)
+
+#same for 1988
+p224r63_1988 <- brick("p224r63_1988_masked.grd")
+plotRGB(p224r63_1988, r=5, g=4, b=3, stretch="Lin") 
+
+#to have it all together
+par(mfrow=c(1,2))
+plotRGB(p224r63_2011, r=5, g=4, b=3, stretch="Lin") 
+plotRGB(p224r63_1988, r=5, g=4, b=3, stretch="Lin") 
+#pink part increased due to loss of forest for agriculture
+
+#how to plot all the bands to see all the information together?
+names(p224r63_2011)   #to know the names of the images in that file
+#we are going, through $, to correlate the bands to the image
+plot(p224r63_2011$B1_sre, p224r63_2011$B2_sre)
+
+#p224r63_2011    #gives us the number of data that is 4 million, we need to decrease it.. too heavy!
+#dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
+
+#decrease the resolution, 10 times smaller. res=resempling the resolution
+p224r63_2011_res <- aggregate(p224r63_2011, fact=10)
+
+#library(RStoolbox) is now needed...
+p224r63_2011_pca <- rasterPCA(p224r63_2011_res)
+
+#we want to plot the map
+plot(p224r63_2011_pca$map)
+
+cl <- colorRampPalette(c('dark grey','grey','light grey'))(100) # 
+plot(p224r63_2011_pca$map, col=cl)
+
+summary(p224r63_2011_pca$map, col=cl)
+
+pairs(p224r63_2011)
+
+plotRGB(p224r63_2011_pca$map, r=1, g=2, b=3, stretch="Lin")
+
+#1988
+p224r63_1988_res <- aggregate(p224r63_1988, fact=10)
+p224r63_1988_pca <- rasterPCA(p224r63_1988_res) 
+plot(p224r63_1988_pca$map, col=cl)
+summary(p224r63_1988_pca$model)
+pairs(p224r63_1988)
+
+#difference
+difpca <- p224r63_2011_pca$map - p224r63_1988_pca$map
+plot(difpca)
+
+#final plot (impressive)
+cldif <- colorRampPalette(c('blue','black','yellow'))(100) # 
+plot(difpca$PC1, col=cldif)
