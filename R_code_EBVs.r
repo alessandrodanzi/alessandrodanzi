@@ -39,7 +39,7 @@ plot(sd_snt, col=cl)
 par(mfrow=c(1,2))
 plotRGB(snt,4,3,2, stretch="lin")
 plot(sd_snt, col=cl)
-#################################################
+##################check from here###############################
 # plot(std_snt8bit, col=cl)
 
 
@@ -116,6 +116,7 @@ plot(sd_clad, col=cl)
 # plot(sd_clad_agg, col=cl)
 
 
+###check from here###
 sd_sntr <- focal(snt_r10$snt_r10.4, w=window, fun=sd)
 sd_sntr <- focal(clad, w=window, fun=sd) 
 clad
