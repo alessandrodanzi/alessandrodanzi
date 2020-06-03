@@ -152,6 +152,7 @@ dvi1988<- p224r63_1988$B4_sre - p224r63_1988$B3_sre
 cl <- colorRampPalette(c('firebrick4','lightsalmon1','darkolivegreen'))(100) 
 plot(dvi1988, col=cl)
 
+#Difference in time
 diff <- dvi2011 - dvi1988
 plot(diff)
 
