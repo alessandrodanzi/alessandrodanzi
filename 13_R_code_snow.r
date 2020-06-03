@@ -109,3 +109,44 @@ plot(difsnow, col=cldiff)
 
 predicted.snow.2025.norm <- raster("predicted.snow.2025.norm.tif")
 plot(predicted.snow.2025.norm, col=cl)
+
+##########################Day 2#######################
+setwd("/Users/alessandro/lab/snow")  #mac
+#Exercise: import all of the snow cover images all together
+library(ncdf4)
+library(raster)
+rlist <- list.files(pattern="snow20")
+#lapply once again applies a certain function to a list
+import <- lapply(rlist,raster)
+#stack() function connect several images together in one single image
+snow.multitemp <- stack(import)
+snow.multitemp  #to see the result
+cl <- colorRampPalette(c('darkblue','blue','light blue'))(100) 
+plot(snow.multitemp, col=cl)
+
+#we can now use the heavy image of the prediction for 2025 calculated last time 
+#load("predicted.2025.norm.tif")
+#or import from IOL
+#we import the image with raster(). if we needed to import more bands we would have used brick() function
+raster("predicted.2025.norm.tif")
+prediction <- raster("predicted.2025.norm.tif")
+plot(prediction, col=cl)
+#how to export the prediction output?
+#writeRaster() function is writing the entire raster object to a file that we choose (creating a new data)
+#the final output will be named final.tif
+writeRaster(prediction, "final.tif")
+#i can also make a pdf of the graph
+#final stack (=sum of all the images/inputs)
+#snow.multitemp was already a stack
+final.stack<- stack(snow.multitemp,prediction)
+plot(final.stack, col=cl)
+#export now the R graph for the thesis
+pdf("my_final_exciting_graph.pdf")
+plot(final.stack, col=cl)
+dev.off()
+#export as png
+png("my_final_exciting_graph.png")
+plot(final.stack, col=cl)
+dev.off()
+#we can even choose the resolution by the dimension or the number of pixels
+
