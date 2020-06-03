@@ -1,16 +1,19 @@
 #set working directory
-setwd("/Users/alessandro/lab")
+setwd("/Users/alessandro/lab") #mac
 
-#the original faPAR from Copernicus is 2 GB, let's see faPAR10
+#the original faPAR from Copernicus is 2 GB, let's see how smaller is the file faPAR10
 load("faPAR.RData")
+#ls() function to list the datasets we have
 ls()
+#as usual we open the libraries
 library (raster)
 library (rasterdiv)
 
-#to write a file
+#we use writeRaster() function to write a file
+#.tif file is an image saved in a high-quality graphics format. It is often used for storing images with many colors, typically digital photos, and includes support for layers and multiple pages
 writeRaster(copNDVI, "copNDVI.tif")
 
-#exercise###
+###exercise###
 library(rasterVis)
 #faPAR:levelplot this set
 levelplot(faPAR10)
@@ -20,19 +23,21 @@ levelplot(faPAR10)
 erosion <- c(12, 14, 16, 24, 26, 40, 55, 67)
 hm <- c(30, 100, 150, 200, 260, 340, 460, 600)
 
-#let's plot the two cariables. pch (point character)= is the simbol, depends on the number
+#let's plot the two variables. pch (point character)= is the simbol, depends on the number we assign it (lists online)
 plot(erosion, hm, col="red", pch=19, xlab="erosion", ylab="heavy metals", cex=2)
+#we assign to the vector model1 the linear model of the relation between the two variables through the function lm()
 model1 <- lm(hm ~ erosion) 
 summary(model1)
 #y=bx+a, intercept in summary means a, y is hm, x is erosion, b is the slope)
-#R-squared is higher when the relation between the variables is higher (far from being random
-#p-values means how many times is a random situation. p<0.01 there's a lower probability that once over hundred times is a random situation
+#R-squared is higher when the relation between the variables is higher (far from being random)
+#p-values means how many times is a random situation. p<0.01 means that there's a probability lower than one over hundred times that it is a random situation
+#abline() function can be used to add vertical, horizontal or regression lines to a graph
 abline (model1)
-
+##########################################################################
 setwd("/Users/alessandro/lab")
 library(raster)
 library(rasterVis)
-faPAR10 <- raster("~/lab/faPAR10.tif")
+faPAR10 <- raster("/Users/alessandro/lab/faPAR10.tif")
 plot(faPAR10)
 plot(copNDVI)
 
