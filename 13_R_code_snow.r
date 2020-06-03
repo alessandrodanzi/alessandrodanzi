@@ -1,25 +1,24 @@
 # R_code_snow.r
+#1st set the working directory to the folder snow in the folder lab instead of the usual setwd("/Users/alessandro/lab")
+#we create a folder within the folder lab because we will use the function lapply() to search files that comprehend the name within the folder.
+#in this case we don't have other files named snow but it's better to know this
+setwd("/Users/alessandro/lab/snow")
 
-setwd("/Users/alessandro/lab")
-# setwd("/Users/utente/lab") #mac
-# setwd("C:/lab/") # windows
-
-install.packages("ncdf4")
-#we will use raster library and ncdf4(interface with netcdf data, some sort of .tif).Since most of the copernicus are based on nCDF we need to import this library (sometimes is comprehended in raster).
+#we will use raster library and ncdf4(interface with netcdf data, some sort of .tif). Since most of the copernicus are based on nCDF we need to import this library (sometimes is comprehended in raster).
 #once installed we can launch the libraries in R
+install.packages("ncdf4")
+
 library(ncdf4)
 library(raster)
 #we import our file and associate it to snowmay vector
 snowmay <-raster("c_gls_SCE_202005280000_NHEMI_VIIRS_V1.0.1.nc")
 cl <- colorRampPalette(c('darkblue','blue','light blue'))(100) 
 
-# Exercise: plot snow cover with the cl palette
+
+#### Exercise: plot snow cover with the cl palette ####
 plot(snowmay,col=cl)
 
-#Slow manners to import the set
-#1st set the working directory to the folder snow in the folder lab
-setwd("/Users/alessandro/lab/snow")
-#one simple manner to import is: raster("snow2000r.tif") and associate it to the vector snow2000
+#one simple but slow manner to import the set is: raster("snow2000r.tif") and associate it to the vector snow2000 and so on for every year
 snow2000 <- raster("snow2000r.tif")
 snow2005 <- raster("snow2005r.tif")
 snow2010 <- raster("snow2010r.tif")
@@ -34,7 +33,7 @@ plot(snow2005,col=cl)
 plot(snow2010,col=cl)
 plot(snow2015,col=cl)
 plot(snow2020,col=cl)
-#this is one of the ways to import the graphs but implies many lines!
+#this is one of the ways to import the graphs but implies many lines of code!
 #(20 lines to do the job)
 #the next function is a quicker way to import all the images
 
@@ -44,17 +43,16 @@ plot(snow2020,col=cl)
 #in our case our files all include snow20 in the name
 rlist <- list.files(pattern="snow20")
 #rlist to see the files within it
-import <- lapply(rlist, raster)
 #we can now make the stack function to connect the images on layers
 import <- lapply(rlist,raster)
 snow.multitemp <- stack(import)
-#snow.multitemp to see the object
+#launch snow.multitemp to see the object
 #at this point we can plot the whole vector snow.multitemp with the col=cl
 plot(snow.multitemp, col=cl)
  
 
 ##save raster into list
-##con lappy
+##with lappy
 # list_rast=lapply(rlist, raster)
 # EN <- stack(list_rast)
 # plot(EN)
@@ -63,12 +61,13 @@ rlist <- list.files(pattern="snow20")
 rlist 
 
 #we can now operate applying a linear regression to see the tendency of the reduction of snow during the years and predict the value for 2025
-############# prediction #############
 
+
+############# prediction #############
 require(raster)
 require(rgdal)
 
-# define the extent 180:extent of data, 90:extent of latitude
+# define the extent: 180=extent of data, 90=extent of latitude
 ext <- c(-180, 180, -90, 90)
 extension <- crop(snow.multitemp, ext)
     
