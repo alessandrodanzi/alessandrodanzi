@@ -1,0 +1,27 @@
+#Copernicus dataset
+#4 main areas
+#sentinel2: satellite with resolution of 10m
+#VEGETATION
+#LAI=leaf area index. the higher it is the higher is the photosynthesis
+#FCOVER is related. An idea for the exam is to see the correlation of the variables during the same day
+#FAPAR: how much of the radiation from the sun is retained by plants to do photosynthesis
+#NDVI: different vegetation index (NIR reflecting and red absorbing. normalized index is difference between them)
+#VCI= vegetation condition, if you have temporal changes. 
+#VPI=vegetation productivity index. how much vegetation is producing (agricultual power), both biomass and fruits
+#Dry matter: biomass without the water. idea of how much the vegetation is growing
+#burnt area: both human related and natural.
+#soil water index: measures the moisture of soil. 
+#surface soil moisture: only in the very first part of soil horizon, important for first new colonization
+#3 variables for ENERGY: albedo, reflectance, soil temperature
+#WATER CYCLE: 
+#surface water temperature, 
+#water quality (amount of nutrients, clorophyll, ...) 
+#water bodies (inland water) max and min extent, seasonal dynamics
+#water level (hight of the water respect to sealevel)
+#CRYOSPHERE:
+#lake ice extent
+#snow cover
+#snow water equivalent
+
+ 
+ 
